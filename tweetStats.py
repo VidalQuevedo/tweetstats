@@ -1,5 +1,7 @@
 # MapReduce
+import sys, argparse
 from bson.code import Code
+from pymongo import MongoClient
 
 def map_array_field(field, field_item):
   map = Code( "function () {"
@@ -80,12 +82,17 @@ def getTweetsWithHighestRtCount(db, collection, results_collection, limit = 10, 
   for doc in result.find().limit(limit).sort('value', -1):
     print '\t - ' + doc
 
+def collectonExists(db, collection):
+  collection = db[collection];
+  if (collection.count() > 0):
+    return True
+
 
 # --- users --- #
 
 #get total number of users
 def getTotalNumberOfUsers(db, collection, results_collection, regenerate = False):
-  if (regenerate):
+  if (regenerate) or (collectonExists(db, collection) != True):
     db[results_collection].remove()
     for doc in db[collection].distinct('user.id_str'):
       db[results_collection].insert({'id_str': doc})
@@ -202,39 +209,62 @@ def getConversations(db, limit = 1):
         print doc3['created_at'] + ' - ' + doc3['user']['screen_name'] + ': ' + doc3['text'] + '\n'
 
 
-def getDescriptives(db, collection):
+def getDescriptives(db, collection, regenerate = False):
   print "Basic Descriptives from database \"" + db.name + "\", collection \"" + collection + "\":"
   getTotalNumTweets(db, collection)
   
   print '\n### Users ###'
-  getTotalNumberOfUsers(db, collection, 'user_ids', False)
-  getNumberOfTweetsPerUser(db, collection, 'number_of_tweets_per_user', 5, False)
-  getMostMentionedUsers(db, collection, 'most_mentioned_users', 5,False)
+  getTotalNumberOfUsers(db, collection, 'user_ids', regenerate)
+  #getNumberOfTweetsPerUser(db, collection, 'number_of_tweets_per_user', 5, False)
+  #getMostMentionedUsers(db, collection, 'most_mentioned_users', 5,False)
 
   print '\n### Hashtags ###'
-  getMostUsedHashtags(db, collection, 'most_used_hashtags',5, False)
+  #getMostUsedHashtags(db, collection, 'most_used_hashtags',5, False)
 
   print '\n### Links ###'
-  getMostLinkedToUrls(db, collection, 'most_linked_to_urls', 5, False)
+  #getMostLinkedToUrls(db, collection, 'most_linked_to_urls', 5, False)
 
 
+def main():
+  # Parser script from http://www.cyberciti.biz/faq/python-command-line-arguments-argv-example/
+  parser = argparse.ArgumentParser()
+  parser.add_argument('-cm','--command', help='Command to execute',required=True)
+  parser.add_argument('-db','--database',help='Name of database', required=True)
+  parser.add_argument('-coll','--collection',help='Name of collection', required=True)
+  parser.add_argument('-regen','--regenerate',help='Regenerate?', default=False, required=False)
+  args = parser.parse_args()
 
-### RUN STUFF ###
+  command = args.command
+  database = args.database
+  collection = args.collection
+  regenerate = args.regenerate
 
-from pymongo import MongoClient
+  # connect to mongo
+  connection = MongoClient()
+  db = connection[database]
 
-# database = 'public_sphere'
-database = 'obamacare'
-collection =  'tweets'
+  if command == 'getDescriptives':
+    getDescriptives(db, collection, regenerate)
 
-connection = MongoClient()
-db = connection[database]
 
-# getDescriptives(db, collection)
 # getTotalNumberOfRTd(db, collection)
 # getTweetsWithHighestRtCount(db, collection, 'retweets_with_highest_count', 25)
 # getMostRepliedToUsers(db, collection, 'most_replied_to_users', 10) 
 # getConversations(db, collection, 'most_replied_to_tweets', 10)
 # getConversations(db, 50)
 # getMostRetweeted(db, collection) #0
+  
+
+
+
+### RUN STUFF ###
+
+if __name__ == '__main__':
+  main()
+  
+  
+
+  
+
+
 
