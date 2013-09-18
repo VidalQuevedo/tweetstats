@@ -215,18 +215,19 @@ def getDescriptives(db, collection, regenerate = False):
   
   print '\n### Users ###'
   getTotalNumberOfUsers(db, collection, 'user_ids', regenerate)
-  #getNumberOfTweetsPerUser(db, collection, 'number_of_tweets_per_user', 5, False)
-  #getMostMentionedUsers(db, collection, 'most_mentioned_users', 5,False)
+  getNumberOfTweetsPerUser(db, collection, 'number_of_tweets_per_user', 5, regenerate)
+  getMostMentionedUsers(db, collection, 'most_mentioned_users', 5, regenerate)
 
   print '\n### Hashtags ###'
-  #getMostUsedHashtags(db, collection, 'most_used_hashtags',5, False)
+  getMostUsedHashtags(db, collection, 'most_used_hashtags',5, regenerate)
 
   print '\n### Links ###'
-  #getMostLinkedToUrls(db, collection, 'most_linked_to_urls', 5, False)
+  getMostLinkedToUrls(db, collection, 'most_linked_to_urls', 5, regenerate)
 
 
 def main():
-  # Parser script from http://www.cyberciti.biz/faq/python-command-line-arguments-argv-example/
+  # parse arguments
+  # (script from http://www.cyberciti.biz/faq/python-command-line-arguments-argv-example/)
   parser = argparse.ArgumentParser()
   parser.add_argument('-cm','--command', help='Command to execute',required=True)
   parser.add_argument('-db','--database',help='Name of database', required=True)
@@ -243,16 +244,21 @@ def main():
   connection = MongoClient()
   db = connection[database]
 
+  # run commands
   if command == 'getDescriptives':
     getDescriptives(db, collection, regenerate)
-
-
-# getTotalNumberOfRTd(db, collection)
-# getTweetsWithHighestRtCount(db, collection, 'retweets_with_highest_count', 25)
-# getMostRepliedToUsers(db, collection, 'most_replied_to_users', 10) 
-# getConversations(db, collection, 'most_replied_to_tweets', 10)
-# getConversations(db, 50)
-# getMostRetweeted(db, collection) #0
+  elif command == 'getTotalNumberOfRtd':
+    getTotalNumberOfRTd(db, collection)
+  elif command == 'getTweetsWithHighestRtCount':
+    getTweetsWithHighestRtCount(db, collection, 'retweets_with_highest_count', 25, regenerate)
+  elif command == 'getMostRepliedToUsers':
+    getMostRepliedToUsers(db, collection, 'most_replied_to_users', 10) 
+  elif command == 'getConversations':
+    getConversations(db, collection, 'most_replied_to_tweets', 10)
+  elif command == 'getConversations':
+    getConversations(db, 50)
+  elif command == 'getMostRetweeted':
+    getMostRetweeted(db, collection)
   
 
 
