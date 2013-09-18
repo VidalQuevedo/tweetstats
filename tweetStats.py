@@ -175,8 +175,8 @@ def getMostLinkedToUrls(db, collection, reduced_collection, limit = 10, run_map_
 
 #--- Conversations ---#
 
-def getMostRepliedToUsers(db, collection, reduced_collection, limit = 10, run_map_reduce = False):
-  if (run_map_reduce):
+def getMostRepliedToUsers(db, collection, reduced_collection, limit = 10, regenerate = False):
+  if (regenerate):
     db[reduced_collection].remove()
     map = map_field('in_reply_to_user_id_str')
     reduce = reduce_field()
@@ -252,7 +252,7 @@ def main():
   elif command == 'getTweetsWithHighestRtCount':
     getTweetsWithHighestRtCount(db, collection, 'retweets_with_highest_count', 25, regenerate)
   elif command == 'getMostRepliedToUsers':
-    getMostRepliedToUsers(db, collection, 'most_replied_to_users', 10) 
+    getMostRepliedToUsers(db, collection, 'most_replied_to_users', 10, regenerate) 
   elif command == 'getConversations':
     getConversations(db, collection, 'most_replied_to_tweets', 10)
   elif command == 'getConversations':
