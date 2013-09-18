@@ -1,5 +1,5 @@
 # MapReduce
-import sys, argparse
+import sys, argparse, random
 from bson.code import Code
 from pymongo import MongoClient
 
@@ -82,17 +82,25 @@ def getTweetsWithHighestRtCount(db, collection, results_collection, limit = 10, 
   for doc in result.find().limit(limit).sort('value', -1):
     print '\t - ' + doc
 
-def collectonExists(db, collection):
-  collection = db[collection];
+def collectionExists(db, collection):
+  collection = db[collection]
   if (collection.count() > 0):
     return True
+
+def getRandom(db, collection, limit = 10):
+  count = db[collection].count()
+  for i in range (0, limit):
+    rand = random.randint(0,count)
+    # print str(rand) + '\n'
+    doc = db[collection].find().limit(-1).skip(rand).next()
+    print doc["text"]
 
 
 # --- users --- #
 
 #get total number of users
 def getTotalNumberOfUsers(db, collection, results_collection, regenerate = False):
-  if (regenerate) or (collectonExists(db, collection) != True):
+  if (regenerate):
     db[results_collection].remove()
     for doc in db[collection].distinct('user.id_str'):
       db[results_collection].insert({'id_str': doc})
@@ -246,19 +254,21 @@ def main():
 
   # run commands
   if command == 'getDescriptives':
-    getDescriptives(db, collection, regenerate)
-  elif command == 'getTotalNumberOfRtd':
-    getTotalNumberOfRTd(db, collection)
-  elif command == 'getTweetsWithHighestRtCount':
-    getTweetsWithHighestRtCount(db, collection, 'retweets_with_highest_count', 25, regenerate)
+    getDescriptives(db, collection, regenerate) #works
+  elif command == 'getTotalNumberOfRTd':
+    getTotalNumberOfRTd(db, collection) 
+  elif command == 'getTweetsWithHighestRtCount': #doesn't work
+    getTweetsWithHighestRtCount(db, collection, 'retweets_with_highest_count', 25, regenerate) #works
   elif command == 'getMostRepliedToUsers':
-    getMostRepliedToUsers(db, collection, 'most_replied_to_users', 10, regenerate) 
-  elif command == 'getConversations':
-    getConversations(db, collection, 'most_replied_to_tweets', 10)
-  elif command == 'getConversations':
-    getConversations(db, 50)
-  elif command == 'getMostRetweeted':
-    getMostRetweeted(db, collection)
+    getMostRepliedToUsers(db, collection, 'most_replied_to_users', 10, regenerate) #works
+  # elif command == 'getConversations':
+  #   getConversations(db, collection, 'most_replied_to_tweets', 10)
+  # elif command == 'getConversations':
+  #   getConversations(db, 50)
+  # elif command == 'getMostRetweeted':
+  #   getMostRetweeted(db, collection)
+  elif command == 'getRandom':
+    getRandom(db, collection, 1)
   
 
 
