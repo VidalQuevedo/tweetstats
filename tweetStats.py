@@ -241,12 +241,14 @@ def main():
   parser.add_argument('-db','--database',help='Name of database', required=True)
   parser.add_argument('-coll','--collection',help='Name of collection', required=True)
   parser.add_argument('-regen','--regenerate',help='Regenerate?', default=False, required=False)
+  parser.add_argument('-lim','--limit',help='Regenerate?', default=10, required=False)
   args = parser.parse_args()
 
   command = args.command
   database = args.database
   collection = args.collection
   regenerate = args.regenerate
+  limit = args.limit
 
   # connect to mongo
   connection = MongoClient()
@@ -258,9 +260,9 @@ def main():
   elif command == 'getTotalNumberOfRTd':
     getTotalNumberOfRTd(db, collection) 
   elif command == 'getTweetsWithHighestRtCount': #doesn't work
-    getTweetsWithHighestRtCount(db, collection, 'retweets_with_highest_count', 25, regenerate) #works
+    getTweetsWithHighestRtCount(db, collection, 'retweets_with_highest_count', limit, regenerate) #works
   elif command == 'getMostRepliedToUsers':
-    getMostRepliedToUsers(db, collection, 'most_replied_to_users', 10, regenerate) #works
+    getMostRepliedToUsers(db, collection, 'most_replied_to_users', limit, regenerate) #works
   # elif command == 'getConversations':
   #   getConversations(db, collection, 'most_replied_to_tweets', 10)
   # elif command == 'getConversations':
@@ -268,7 +270,7 @@ def main():
   # elif command == 'getMostRetweeted':
   #   getMostRetweeted(db, collection)
   elif command == 'getRandom':
-    getRandom(db, collection, 1)
+    getRandom(db, collection, limit)
   
 
 
