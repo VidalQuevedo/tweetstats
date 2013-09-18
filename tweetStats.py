@@ -217,20 +217,20 @@ def getConversations(db, limit = 1):
         print doc3['created_at'] + ' - ' + doc3['user']['screen_name'] + ': ' + doc3['text'] + '\n'
 
 
-def getDescriptives(db, collection, regenerate = False):
+def getDescriptives(db, collection, regenerate, limit):
   print "Basic Descriptives from database \"" + db.name + "\", collection \"" + collection + "\":"
   getTotalNumTweets(db, collection)
   
   print '\n### Users ###'
   getTotalNumberOfUsers(db, collection, 'user_ids', regenerate)
-  getNumberOfTweetsPerUser(db, collection, 'number_of_tweets_per_user', 5, regenerate)
-  getMostMentionedUsers(db, collection, 'most_mentioned_users', 5, regenerate)
+  getNumberOfTweetsPerUser(db, collection, 'number_of_tweets_per_user', limit, regenerate)
+  getMostMentionedUsers(db, collection, 'most_mentioned_users', limit, regenerate)
 
   print '\n### Hashtags ###'
-  getMostUsedHashtags(db, collection, 'most_used_hashtags',5, regenerate)
+  getMostUsedHashtags(db, collection, 'most_used_hashtags',limit, regenerate)
 
   print '\n### Links ###'
-  getMostLinkedToUrls(db, collection, 'most_linked_to_urls', 5, regenerate)
+  getMostLinkedToUrls(db, collection, 'most_linked_to_urls', limit, regenerate)
 
 
 def main():
@@ -256,7 +256,7 @@ def main():
 
   # run commands
   if command == 'getDescriptives':
-    getDescriptives(db, collection, regenerate) #works
+    getDescriptives(db, collection, regenerate, limit) #works
   elif command == 'getTotalNumberOfRTd':
     getTotalNumberOfRTd(db, collection) 
   elif command == 'getTweetsWithHighestRtCount': #doesn't work
