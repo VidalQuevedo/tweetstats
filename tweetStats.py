@@ -1,7 +1,8 @@
 # MapReduce
-import sys, argparse, random
+import sys, argparse, random, csv
 from bson.code import Code
 from pymongo import MongoClient
+
 
 def map_array_field(field, field_item):
   map = Code( "function () {"
@@ -89,11 +90,22 @@ def collectionExists(db, collection):
 
 def getRandom(db, collection, limit = 10):
   count = db[collection].count()
+  # c = csv.writer(open("sample.csv", "wb"), delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL)
   for i in range (0, limit):
     rand = random.randint(0,count)
     # print str(rand) + '\n'
     doc = db[collection].find().limit(-1).skip(rand).next()
-    print doc["text"]
+    # exp_urls = []
+    exp_urls = ""
+    if len(doc['entities']['urls']) > 0:
+      for url in doc['entities']['urls']:
+        # exp_urls.append(url["expanded_url"])
+        exp_urls = exp_urls + ' ' + url["expanded_url"]
+    # c.writerow([doc["id_str"], doc["text"].encode('utf-8').rstrip(), exp_urls.encode('utf-8').rstrip()])
+
+    
+    
+    
 
 
 # --- users --- #
@@ -248,7 +260,7 @@ def main():
   database = args.database
   collection = args.collection
   regenerate = args.regenerate
-  limit = args.limit
+  limit = int(args.limit)
 
   # connect to mongo
   connection = MongoClient()
