@@ -20,7 +20,12 @@ To use this script, you need:
 
 ## Parameters
 
-  -cm[--command]: The command you want tweetStats to execute.
+  -cm[--command]: The command you want tweetStats to execute. Available commands include:
+    - getDescriptives: Generate basic descriptives, such as TotalNumTweets, TotalNumberOfUsers, NumberOfTweetsPerUser, MostMentionedUsers, MostUsedHashtags, and MostLinkedToUrls     
+    - getTotalNumberOfRTd
+    - getMostRepliedToUsers
+
+    More commands to come.
 
   -db[--database]: the name of the MongoDB database to use.
 
