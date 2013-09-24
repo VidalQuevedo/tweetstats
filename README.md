@@ -16,21 +16,20 @@ To use this script, you need:
 2. Make sure your MongoDB server is running
 3. In the same directory where tweetsStats.py is located, type:
 
-  python tweetStats.py -cm COMMAND -db DATABASE -coll COLLECTION [-regen REGENERATE] [-lim LIMIT]
+    python tweetStats.py -cm COMMAND -db DATABASE -coll COLLECTION [-regen REGENERATE] [-lim LIMIT]
 
 ## Parameters
 
-  -cm[--command]: The command you want tweetStats to execute. Available commands include:
-    - getDescriptives: Generate basic descriptives, such as TotalNumTweets, TotalNumberOfUsers, NumberOfTweetsPerUser, MostMentionedUsers, MostUsedHashtags, and MostLinkedToUrls     
-    - getTotalNumberOfRTd
-    - getMostRepliedToUsers
+*  -cm[--command]: The command you want tweetStats to execute. Available commands include:
+  * getDescriptives: Generate basic descriptives, such as TotalNumTweets, TotalNumberOfUsers, NumberOfTweetsPerUser, MostMentionedUsers, MostUsedHashtags, and MostLinkedToUrls     
+  * getTotalNumberOfRTd
+  * getMostRepliedToUsers
 
-    More commands to come.
 
-  -db[--database]: the name of the MongoDB database to use.
+*  -db[--database]: the name of the MongoDB database to use.
 
-  -coll[--collection]: the name of the collection to use.
+*  -coll[--collection]: the name of the collection to use.
 
-  [-regen[--regenerate]]: (True/False) Boolean indicating whether you would like the results to be recalculated. Default: True.
+*  [-regen[--regenerate]]: (True/False) Boolean indicating whether you would like the results to be recalculated. Default: True.
 
-  [-lim[--limit]]: (Int) Number of results to return. Default: 10
+*  [-lim[--limit]]: (Int) Number of results to return. Default: 10
