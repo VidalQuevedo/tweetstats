@@ -7,8 +7,8 @@ A set of MapReduce scripts to get descriptive stats from Twitter objects stored 
 
 To use this script, you need:
 
-1. A (MongoDB)[http://www.mongodb.org/] database with a collection containing BSON documents imported from a (raw Twitter dataset in JSON format)[https://dev.twitter.com/docs/platform-objects/tweets].
-2. (PyMongo)[http://api.mongodb.org/python/current/]
+1. A [MongoDB](http://www.mongodb.org/) database with a collection containing BSON documents imported from a [raw Twitter dataset in JSON format](https://dev.twitter.com/docs/platform-objects/tweets).
+2. [PyMongo](http://api.mongodb.org/python/current/)
 
 # Usage
 
