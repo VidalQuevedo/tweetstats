@@ -50,9 +50,6 @@ def getTotalNumTweets(db, collection):
 
 
 
-
-
-
 #avg num of tweet per day/hour/min/sec
 
 #get start and end collection times
@@ -121,8 +118,6 @@ def getTotalNumberOfUsers(db, collection, results_collection, regenerate = False
 
 
 #get users with most followers
-
-
 
 
 #get most mentioned twitter user
@@ -268,25 +263,24 @@ def main():
 
   # run commands
   if command == 'getDescriptives':
-    getDescriptives(db, collection, regenerate, limit) #works
+    getDescriptives(db, collection, regenerate, limit)
   elif command == 'getTotalNumberOfRTd':
     getTotalNumberOfRTd(db, collection) 
-  elif command == 'getTweetsWithHighestRtCount': #doesn't work
-    getTweetsWithHighestRtCount(db, collection, 'retweets_with_highest_count', limit, regenerate) #works
   elif command == 'getMostRepliedToUsers':
-    getMostRepliedToUsers(db, collection, 'most_replied_to_users', limit, regenerate) #works
+    getMostRepliedToUsers(db, collection, 'most_replied_to_users', limit, regenerate)  
+  
+  ## Work on these
+  # elif command == 'getTweetsWithHighestRtCount': #doesn't work
+  #  getTweetsWithHighestRtCount(db, collection, 'retweets_with_highest_count', limit, regenerate) #works
   # elif command == 'getConversations':
   #   getConversations(db, collection, 'most_replied_to_tweets', 10)
   # elif command == 'getConversations':
   #   getConversations(db, 50)
   # elif command == 'getMostRetweeted':
   #   getMostRetweeted(db, collection)
-  elif command == 'getRandom':
-    getRandom(db, collection, limit)
+  # elif command == 'getRandom':
+    # getRandom(db, collection, limit)
   
-
-
-
 ### RUN STUFF ###
 
 if __name__ == '__main__':
